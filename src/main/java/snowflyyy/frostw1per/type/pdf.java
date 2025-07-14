@@ -51,7 +51,7 @@ public class pdf {
             }
             newPathCreate.append("/[cleaned by snowf1ake.net]");
             String newPath = newPathCreate.toString();
-            document.save(newPath);
+            document.save(new File(newPath));
             System.out.println("Cleaned file saved to " + newPath);
         }catch (IOException e) {
             e.printStackTrace();
