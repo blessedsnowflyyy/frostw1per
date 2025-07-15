@@ -15,6 +15,19 @@ public class pdf {
     public static void stripMDPDF(String filePath){
         try (PDDocument document = Loader.loadPDF(new File(String.valueOf(filePath)))) {
             int pageCount = document.getNumberOfPages();
+
+            if (document.getDocumentCatalog().getNames() != null) {
+                document.getDocumentCatalog().getNames().setEmbeddedFiles(null);
+            }
+            document.getDocumentCatalog().setOpenAction(null);
+            document.getDocumentCatalog().setActions(null);
+            if (document.getDocumentCatalog().getAcroForm() != null) {
+                document.getDocumentCatalog().getAcroForm().getFields().clear();
+                document.getDocumentCatalog().setAcroForm(null);
+            }
+            document.getDocumentCatalog().setDocumentOutline(null);
+
+
             PDDocumentInformation information = document.getDocumentInformation();
             information.getCOSObject().clear();
 
@@ -49,7 +62,7 @@ public class pdf {
                     newPathCreate.append("/");
                 }
             }
-            newPathCreate.append("/[cleaned by snowf1ake.net]");
+            newPathCreate.append("/[cleaned by snowf1ake.net].pdf");
             String newPath = newPathCreate.toString();
             document.save(new File(newPath));
             System.out.println("Cleaned file saved to " + newPath);
